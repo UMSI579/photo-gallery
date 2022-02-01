@@ -135,40 +135,32 @@
    // Perform initial call to populateGrid()
    populateGrid('https://api.thecatapi.com/v1/images/search?api_key=240265c7-38bd-47a1-8655-7adc3861f710', parseJson);
 
-   // Create an array of objects that represent
-   // - the buttons that trigger API requests
-   // - the endpoint of the API it will fetch
-   // - The callback for parsing the fetch result.
-   const buttonsAndEndpoints = [
-      {
-         selector: '#more-dogs',
-         endpointUrl: 'https://random.dog/woof.json',
-         parseFunction: parseJson,
-      },
-      {
-         selector: '#more-cats',
-         endpointUrl: 'https://api.thecatapi.com/v1/images/search?api_key=240265c7-38bd-47a1-8655-7adc3861f710',
-         parseFunction: parseJson,
-      },
-      {
-         selector: '#more-random',
-         endpointUrl: 'https://picsum.photos/200/300',
-         parseFunction: parseImageUrl,
-      },
-   ];
+   
+   // Clicking on 'More dogs" should place a request to the
+   // random.dog API.
+   document.querySelector('#more-dogs').addEventListener('click', (e) => {
+      populateGrid('https://random.dog/woof.json', parseJson);
+   });
 
-   // Add button listeners that, on click, will populate the grid with
-   // images from a given endpoint.
-   buttonsAndEndpoints.forEach((item) => {
-     // Use destructuring to assign each object property to
-     // its own variable.
-     // @see https://dmitripavlutin.com/javascript-object-destructuring/.
-     const { selector, endpointUrl, parseFunction } = item;
-     document.querySelector(selector).addEventListener('click', (e) => {
+   // Clicking on 'More cats" should place a request to the
+   // api.thecatapi.com
+   document.querySelector('#more-cats').addEventListener('click', (e) => {
+      populateGrid('https://api.thecatapi.com/v1/images/search?api_key=240265c7-38bd-47a1-8655-7adc3861f710', parseJson);
+   });
+
+    // Clicking on 'More random" should place a request to the
+   // picsum API for 200x300 images.
+   document.querySelector('#more-random').addEventListener('click', (e) => {
+      populateGrid('https://picsum.photos/200/300', parseImageUrl);
+   });
+
+   // Loop through every button to add the event listener that expands it 
+   // on click.
+   document.querySelectorAll('.get-items > button').forEach((button) => {
+      button.addEventListener('click', (e) => {
          // Add the 'button--pressed' class, which will trigger a CSS animation
          // that makes the button momentarily expand on click.
          e.target.classList.add('button--pressed');
-         populateGrid(endpointUrl, parseFunction);
 
          // After 500ms, remove the class that makes the button expand.
          setTimeout(() => {
