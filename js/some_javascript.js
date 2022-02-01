@@ -16,28 +16,6 @@
    }
 
    /**
-    * Callback for getting an image URL from a request to
-    * a service that returns random images from the same URL 
-    * such as picsum.photos.
-    * 
-    * This callback doesn't technically do anything other than
-    * immediately return the argument it is provided, but this
-    * makes it possible for a service such as picsum to be
-    * used interchangably with JSON-returning services that
-    * require two Promise guarantees.
-    * 
-    * @param {Response} requestResult 
-    *   The result of the fetch request.
-    * 
-    * @returns {Response}
-    *   The response object exactly as it was provided in
-    *   param 1.
-    */
-   const parseImageUrl = function(requestResult) {
-      return requestResult;
-   }
-
-   /**
     * Creates an element to be added to a cell in the grid.
     * 
     * This will usually be an image, but may be a video.
@@ -146,12 +124,6 @@
    // api.thecatapi.com
    document.querySelector('#more-cats').addEventListener('click', (e) => {
       populateGrid('https://api.thecatapi.com/v1/images/search?api_key=240265c7-38bd-47a1-8655-7adc3861f710', parseJson);
-   });
-
-    // Clicking on 'More random" should place a request to the
-   // picsum API for 200x300 images.
-   document.querySelector('#more-random').addEventListener('click', (e) => {
-      populateGrid('https://picsum.photos/200/300', parseImageUrl);
    });
 
    // Loop through every button to add the event listener that expands it 
