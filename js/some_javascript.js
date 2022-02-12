@@ -27,25 +27,10 @@
     *   An HTML element that will be added to a grid cell. 
     */
    const createGridContents = function(url) {
-      // If the url points to an mp4 or webm file, then it is a video.
-      // Videos need to be handled slightly differently.
-      const isVideo = url.includes('.mp4') || url.includes('.webm');
 
-      // Create the HTML element, it will either be 'video' or 'img'
-      // We use a ternary statement to determine video or img inside the 
-      // function call.
-      // @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Conditional_Operator
-      const toInsertInGrid = document.createElement((isVideo ? 'video' : 'img'));
+      // Create img element to insert in grid.
+      const toInsertInGrid = document.createElement('img');
       
-      // Additional steps that are needed if the resource is a video.
-      if (isVideo) {
-         // The video element should have controls.
-         toInsertInGrid.setAttribute('controls', true);
-         
-         // A message to display if the video content is not supported
-         // on the browser.
-         toInsertInGrid.textContent = "Sorry, your browser doesn't support embedded videos.";
-      } 
 
       // The spinner class will be removed once the resource is loaded. The
       // event that should be listened to is different if the resource is
@@ -114,31 +99,17 @@
    populateGrid('https://api.thecatapi.com/v1/images/search?api_key=240265c7-38bd-47a1-8655-7adc3861f710', parseJson);
 
    
-   // Clicking on 'More dogs" should place a request to the
-   // random.dog API.
-   document.querySelector('#more-dogs').addEventListener('click', (e) => {
-      populateGrid('https://random.dog/woof.json', parseJson);
-   });
-
    // Clicking on 'More cats" should place a request to the
    // api.thecatapi.com
    document.querySelector('#more-cats').addEventListener('click', (e) => {
+      // Add the 'button--pressed' class, which will trigger a CSS animation
+      // that makes the button momentarily expand on click.
+      e.target.classList.add('button--pressed');
       populateGrid('https://api.thecatapi.com/v1/images/search?api_key=240265c7-38bd-47a1-8655-7adc3861f710', parseJson);
-   });
-
-   // Loop through every button to add the event listener that expands it 
-   // on click.
-   document.querySelectorAll('.get-items > button').forEach((button) => {
-      button.addEventListener('click', (e) => {
-         // Add the 'button--pressed' class, which will trigger a CSS animation
-         // that makes the button momentarily expand on click.
-         e.target.classList.add('button--pressed');
-
-         // After 500ms, remove the class that makes the button expand.
-         setTimeout(() => {
-            e.target.classList.remove('button--pressed');
-         }, 500);
-      });
+      // After 500ms, remove the class that makes the button expand.
+      setTimeout(() => {
+         e.target.classList.remove('button--pressed');
+      }, 500);
    });
  // End capsule.  
  })();
