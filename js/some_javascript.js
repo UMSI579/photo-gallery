@@ -1,7 +1,7 @@
 /**
  * Callback for parsing json from a fetch() response.
  */
-const parseJson = function(requestResult) {
+const parseJson = async function(requestResult) {
    return requestResult.json();
 }
 
@@ -40,7 +40,7 @@ const createGridContents = function(url) {
  *   The callback function for parsing the result of the 
  *   fetch request made to the endpoint.
  */
-const populateGrid = (endpoint, parseResults) => {
+const populateGrid = async (endpoint, parseResults) => {
    // The div with id `#supergrid` in index.html.
    const supergrid = document.querySelector('#supergrid');
 
@@ -56,9 +56,11 @@ const populateGrid = (endpoint, parseResults) => {
       const gridItem = document.createElement('div');
       gridItem.classList.add('spinner');
       supergrid.append(gridItem);
-      fetch(endpoint)
-      .then(parseResults)
-      .then((responseObject) => {
+
+      try {
+         const results = await fetch(endpoint);
+         const responseObject = await parseResults(results);
+      
          // The cat API returns an array even if only a single
          // item is returned get the url property.
          const { url } = responseObject[0];           
@@ -66,12 +68,13 @@ const populateGrid = (endpoint, parseResults) => {
          // Use createGridContents() to create the element that
          // will be added to the grid cell.
          const toInsertInGrid = createGridContents(url);
-
+   
          // Append the generated item to the grid cell.
          gridItem.append(toInsertInGrid);
-      }).catch(error => {
+      } catch (error) {
          console.error('Error:', error);
-      });
+      }
+
    }
 }
 // Perform initial call to populateGrid()
